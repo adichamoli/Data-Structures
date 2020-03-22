@@ -71,5 +71,5 @@ int main(void)
 	int x = 85; 
 	printf("Found at index: %d", 
 			fibMonaccianSearch(arr, x, n)); 
-	return 0; 
+	return 0;
 } 
