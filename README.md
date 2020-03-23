@@ -1,4 +1,6 @@
 # C Programming
+Description of all algorithms are present in Wiki Pages of this Repository
+[Click Here to see](https://github.com/adichamoli/Data-Structures-in-C/wiki)
 
 ## Algorithms
 - Linked List
