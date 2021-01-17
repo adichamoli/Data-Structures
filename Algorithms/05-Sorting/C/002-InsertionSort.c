@@ -1,72 +1,51 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
 #include <stdio.h>
-#include <stdbool.h>
 
-#define MAX 7
-
-int intArray[MAX] = {4,6,3,2,1,9,7};
-
-void printline(int count) {
-   int i;
-	
-   for(i = 0;i < count-1;i++) {
-      printf("=");
-   }
-	
-   printf("=\n");
+void insertionSort(int arr[], int n)
+{
+    int i = 0, j = 0, key = -1;
+    
+    for(i = 1; i < n; i++)
+    {
+        key = arr[i];
+        j = i -1;
+        
+        while(j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        
+        arr [j + 1] = key;
+    }
+    
 }
 
-void display() {
-   int i;
-   printf("[");
-	
-   // navigate through all items 
-   for(i = 0;i < MAX;i++) {
-      printf("%d ",intArray[i]);
-   }
-	
-   printf("]\n");
+void display(int arr[], int size)
+{
+    int i = 0;
+    for(i = 0; i < size; i++)
+        printf("%d ", arr[i]);
 }
 
-void insertionSort() {
-
-   int valueToInsert;
-   int holePosition;
-   int i;
-  
-   // loop through all numbers 
-   for(i = 1; i < MAX; i++) { 
-	
-      // select a value to be inserted. 
-      valueToInsert = intArray[i];
-		
-      // select the hole position where number is to be inserted 
-      holePosition = i;
-		
-      // check if previous no. is larger than value to be inserted 
-      while (holePosition > 0 && intArray[holePosition-1] > valueToInsert) {
-         intArray[holePosition] = intArray[holePosition-1];
-         holePosition--;
-         printf(" item moved : %d\n" , intArray[holePosition]);
-      }
-
-      if(holePosition != i) {
-         printf(" item inserted : %d, at position : %d\n" , valueToInsert,holePosition);
-         // insert the number at hole position 
-         intArray[holePosition] = valueToInsert;
-      }
-
-      printf("Iteration %d#:",i);
-      display();
-		
-   }  
-}
-
-void main() {
-   printf("Input Array: ");
-   display();
-   printline(50);
-   insertionSort();
-   printf("Output Array: ");
-   display();
-   printline(50);
-}
+int main() 
+{ 
+    int arr[] = {64, 25, 12, 22, 11}; 
+    int n = sizeof(arr)/sizeof(arr[0]); 
+    
+    printf("Unsorted array: \n");
+    display(arr, n);
+    printf("\n");
+    
+    insertionSort(arr, n); 
+    printf("Sorted array: \n"); 
+    display(arr, n); 
+    return 0; 
+} 
