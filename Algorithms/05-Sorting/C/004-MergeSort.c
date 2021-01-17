@@ -1,55 +1,85 @@
 #include <stdio.h>
 
-#define max 10
-
-int a[11] = { 10, 14, 19, 26, 27, 31, 33, 35, 42, 44, 0 };
-int b[10];
-
-void merging(int low, int mid, int high) {
-   int l1, l2, i;
-
-   for(l1 = low, l2 = mid + 1, i = low; l1 <= mid && l2 <= high; i++) {
-      if(a[l1] <= a[l2])
-         b[i] = a[l1++];
-      else
-         b[i] = a[l2++];
-   }
-   
-   while(l1 <= mid)    
-      b[i++] = a[l1++];
-
-   while(l2 <= high)   
-      b[i++] = a[l2++];
-
-   for(i = low; i <= high; i++)
-      a[i] = b[i];
+void merge(int arr[], int left, int mid, int right)
+{
+    int i, j, k;
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    
+    int first[n1], second[n2];
+    
+    for(i = 0; i < n1; i++)
+        first[i] = arr[left + i];
+    
+    for(i = 0; i < n2; i++)
+        second[i] = arr[mid + i + 1];
+        
+    i = 0;
+    j = 0;
+    k = left;
+    
+    while( i < n1 && j < n2)
+    {
+        if(first[i] <= second[j])
+        {
+            arr[k] = first[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = second[j];
+            j++;
+        }
+        k++;
+    }
+    
+    while( i < n1 )
+    {
+        arr[k] = first[i];
+        i++;
+        k++;
+    }
+        
+    while( j < n2 )
+    {
+        arr[k] = second[j];
+        j++;
+        k++;
+    }
 }
 
-void sort(int low, int high) {
-   int mid;
-   
-   if(low < high) {
-      mid = (low + high) / 2;
-      sort(low, mid);
-      sort(mid+1, high);
-      merging(low, mid, high);
-   } else { 
-      return;
-   }   
+void mergeSort(int arr[], int left, int right)
+{
+    int mid = -1;
+    if(left < right)
+    {
+        mid = left + (right - left) / 2;
+        
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        
+        merge(arr, left, mid, right);
+    }
 }
 
-int main() { 
-   int i;
-
-   printf("List before sorting\n");
-   
-   for(i = 0; i <= max; i++)
-      printf("%d ", a[i]);
-
-   sort(0, max);
-
-   printf("\nList after sorting\n");
-   
-   for(i = 0; i <= max; i++)
-      printf("%d ", a[i]);
+void display(int arr[], int size)
+{
+    int i = 0;
+    for(i = 0; i < size; i++)
+        printf("%d ", arr[i]);
 }
+
+int main() 
+{ 
+    int arr[] = {64, 25, 12, 22, 11}; 
+    int n = sizeof(arr)/sizeof(arr[0]); 
+    
+    printf("Unsorted array: \n");
+    display(arr, n);
+    printf("\n");
+    
+    mergeSort(arr, 0, n - 1); 
+    printf("Sorted array: \n"); 
+    display(arr, n); 
+    return 0; 
+} 
