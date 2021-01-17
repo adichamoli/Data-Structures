@@ -12,7 +12,7 @@ int find(int data) {
    int comparisons = 1;      
    int index = -1;
 
-   while(lo <= hi) {
+   while ((list[hi] != list[lo]) && (data >= list[lo]) && (data <= list[hi])){
       printf("\nComparison %d  \n" , comparisons ) ;
       printf("lo : %d, list[%d] = %d\n", lo, lo, list[lo]);
       printf("hi : %d, list[%d] = %d\n", hi, hi, list[hi]);
@@ -20,7 +20,7 @@ int find(int data) {
       comparisons++;
 
       // probe the mid point 
-      mid = lo + (((double)(hi - lo) / (list[hi] - list[lo])) * (data - list[lo]));
+	  mid = lo + ((data - list[lo]) * (hi - lo) / (list[hi] - list[lo]));
       printf("mid = %d\n",mid);
 
       // data found 
