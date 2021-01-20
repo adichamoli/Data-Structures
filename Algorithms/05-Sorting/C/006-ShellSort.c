@@ -1,74 +1,43 @@
 #include <stdio.h>
-#include <stdbool.h>
 
-#define MAX 7
-
-int intArray[MAX] = {4,6,3,2,1,9,7};
-
-void printline(int count) {
-   int i;
-	
-   for(i = 0;i < count-1;i++) {
-      printf("=");
-   }
-	
-   printf("=\n");
+void shellSort(int arr[], int size)
+{
+    int gap = 0;
+    int temp = 0;
+    int i = 0;
+    int j = 0;
+    
+    for(gap = size/2 ; gap > 0 ; gap /= 2)
+    {
+        for( i = gap ; i < size ; i++)
+        {
+            temp = arr[i];
+            for( j = i ; j >= gap && arr[j - gap] > temp ; j -= gap)
+                arr[j] = arr[j - gap];
+                
+            arr[j] = temp;
+        }
+    }
 }
 
-void display() {
-   int i;
-   printf("[");
-	
-   // navigate through all items 
-   for(i = 0;i < MAX;i++) {
-      printf("%d ",intArray[i]);
-   }
-	
-   printf("]\n");
+void display(int arr[], int size)
+{
+    int i = 0;
+    for(i = 0; i < size; i++)
+        printf("%d ", arr[i]);
 }
 
-void shellSort() {
-   int inner, outer;
-   int valueToInsert;
-   int interval = 1;   
-   int elements = MAX;
-   int i = 0;
-   
-   while(interval <= elements/3) {
-      interval = interval*3 +1;
-   }
-
-   while(interval > 0) {
-      printf("iteration %d#:",i); 
-      display();
-      
-      for(outer = interval; outer < elements; outer++) {
-         valueToInsert = intArray[outer];
-         inner = outer;
-			
-         while(inner > interval -1 && intArray[inner - interval] 
-            >= valueToInsert) {
-            intArray[inner] = intArray[inner - interval];
-            inner -=interval;
-            printf(" item moved :%d\n",intArray[inner]);
-         }
-         
-         intArray[inner] = valueToInsert;
-         printf(" item inserted :%d, at position :%d\n",valueToInsert,inner);
-      }
-		
-      interval = (interval -1) /3;
-      i++;
-   }          
-}
-
-int main() {
-   printf("Input Array: ");
-   display();
-   printline(50);
-   shellSort();
-   printf("Output Array: ");
-   display();
-   printline(50);
-   return 1;
-}
+int main() 
+{ 
+    int arr[] = {64, 25, 12, 22, 11}; 
+    int n = sizeof(arr)/sizeof(arr[0]); 
+    
+    printf("Unsorted array: \n");
+    display(arr, n);
+    printf("\n");
+    
+    shellSort(arr, n); 
+    printf("Sorted array: \n"); 
+    display(arr, n); 
+    return 0; 
+} 
