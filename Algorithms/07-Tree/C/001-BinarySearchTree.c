@@ -8,48 +8,31 @@ struct node {
    struct node *rightChild;
 };
 
-struct node *root = NULL;
+struct node* root = NULL;
 
-void insert(int data) {
-   struct node *tempNode = (struct node*) malloc(sizeof(struct node));
-   struct node *current;
-   struct node *parent;
+struct node* newNode(int item)
+{
+    struct node* temp
+        = (struct node*)malloc(sizeof(struct node));
+    temp->data = item;
+    temp->leftChild = temp->rightChild = NULL;
+    return temp;
+}
 
-   tempNode->data = data;
-   tempNode->leftChild = NULL;
-   tempNode->rightChild = NULL;
-
-   //if tree is empty
-   if(root == NULL) {
-      root = tempNode;
-   } else {
-      current = root;
-      parent = NULL;
-
-      while(1) { 
-         parent = current;
-         
-         //go to left of the tree
-         if(data < parent->data) {
-            current = current->leftChild;                
-            
-            //insert to the left
-            if(current == NULL) {
-               parent->leftChild = tempNode;
-               return;
-            }
-         }  //go to right of the tree
-         else {
-            current = current->rightChild;
-
-            //insert to the right
-            if(current == NULL) {
-               parent->rightChild = tempNode;
-               return;
-            }
-         }
-      }            
-   }
+struct node* insert(struct node* node, int key)
+{
+    /* If the tree is empty, return a new node */
+    if (node == NULL)
+        return newNode(key);
+ 
+    /* Otherwise, recur down the tree */
+    if (key < node->data)
+        node->leftChild = insert(node->leftChild, key);
+    else
+        node->rightChild = insert(node->rightChild, key);
+ 
+    /* return the (unchanged) node pointer */
+    return node;
 }
 
 struct node* search(int data) {
@@ -78,6 +61,49 @@ struct node* search(int data) {
    return current;
 }
 
+struct node* minValueNode(struct node* node)
+{
+    struct node* current;
+    
+    while(current && current->leftChild != NULL)
+        current = current->leftChild;
+        
+    return current;
+}
+
+struct node* deleteNode(struct node* root, int data)
+{
+    if(root == NULL)
+        return root;
+        
+    if(data < root->data)
+        root->leftChild = deleteNode(root->leftChild, data);
+    
+    else if(data > root->data)
+        root->rightChild = deleteNode(root->rightChild, data);
+    
+    else
+    {
+        if(root->leftChild == NULL)
+        {
+            struct node* temp = root->rightChild;
+            free(root);
+            return temp;
+        }
+        else if(root->rightChild == NULL)
+        {
+            struct node* temp = root->leftChild;
+            free(root);
+            return temp;
+        }
+        
+        struct node* temp = minValueNode(root->rightChild);
+        root->data = temp->data;
+        root->rightChild = deleteNode(root->rightChild, root->data);
+    }
+    return root;
+}
+
 void pre_order_traversal(struct node* root) {
    if(root != NULL) {
       printf("%d ",root->data);
@@ -103,11 +129,15 @@ void post_order_traversal(struct node* root) {
 }
 
 int main() {
-   int i;
-   int array[7] = { 27, 14, 35, 10, 19, 31, 42 };
-
-   for(i = 0; i < 7; i++)
-      insert(array[i]);
+    int i = 0;
+    
+    root = insert(root, 50);
+    root = insert(root, 30);
+    root = insert(root, 20);
+    root = insert(root, 40);
+    root = insert(root, 70);
+    root = insert(root, 60);
+    root = insert(root, 80);
 
    i = 31;
    struct node * temp = search(i);
@@ -119,7 +149,7 @@ int main() {
       printf("[ x ] Element not found (%d).\n", i);
    }
 
-   i = 15;
+   i = 50;
    temp = search(i);
 
    if(temp != NULL) {
@@ -138,5 +168,10 @@ int main() {
    printf("\nPost order traversal: ");
    post_order_traversal(root);       
 
+
+   root = deleteNode(root, 50);
+   printf("\nInorder traversal After Deletion: ");
+   inorder_traversal(root);
+   
    return 0;
 }
