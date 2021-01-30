@@ -11,20 +11,21 @@
 bool checkTriplet(int arr[], int n)
 {
     int maximum = 0;
-    int hash[10];
     int i = 0;
     int val = 0;
     int j = 0;
-    int length = maximum + 1;
-    
-    memset(hash, 0, 10);
+    int length = 0;
     
     for ( i = 0 ; i < n ; i++ )
     {
         maximum = max(maximum, arr[i]);
-        hash[arr[i]] = 0;
     }
-        
+      
+    length = maximum + 1; 
+    int hash[length];  
+    
+    memset(hash, 0, length);
+    
     for ( i = 0 ; i < n ; i++ )
         hash[arr[i]]++;
         
@@ -58,7 +59,7 @@ bool checkTriplet(int arr[], int n)
 
 int main() 
 { 
-    int arr[] = { 3, 8, 5 }; 
+    int arr[] = { 3, 2, 4, 6, 5 }; 
     int n = sizeof(arr) / sizeof(arr[0]); 
     if (checkTriplet(arr, n)) 
         printf("Yes"); 
